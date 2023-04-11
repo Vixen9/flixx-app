@@ -138,40 +138,40 @@ async function displayShowDetails() {
     div.innerHTML = `
     <div class="details-top">
     <div>
-      ${movie.poster_path
-            ? `<img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" 
-        alt="${movie.title}"
+      ${show.poster_path
+            ? `<img src="https://image.tmdb.org/t/p/w500${show.poster_path}" 
+        alt="${show.name}"
         class="card-img-top">`
             : `<img src="../images/no-image.jpg" 
-        alt="${movie.title}"
+        alt="${show.name}"
         class="card-img-top">`
         }
     </div>
     <div>
-      <h2>${movie.title}</h2>
+      <h2>${show.name}</h2>
       <p>
         <i class="fas fa-star text-primary"></i>
-        ${movie.vote_average.toFixed(1)} / 10
+        ${show.vote_average.toFixed(1)} / 10
       </p>
-      <p class="text-muted">Relase Date: ${movie.release_date}</p>
-      <p>${movie.overview}</h5>
+      <p class="text-muted">Last Air Date: ${show.last_air_date}</p>
+      <p>${show.overview}</h5>
       <ul class="list-group">
-        ${movie.genres.map((genre) => `<li>${genre.name}</li>`).join('')}
+        ${show.genres.map((genre) => `<li>${genre.name}</li>`).join('')}
       </ul>
-      <a href="${movie.homepage}" target="_blank" class="btn">Visit Movie Homepage</a>
+      <a href="${show.homepage}" target="_blank" class="btn">Visit show Homepage</a>
     </div>
   </div>
   <div class="details-bottom">
-    <h2>Movie Info</h2>
+    <h2>Show Info</h2>
     <ul>
-      <li><span class="text-secondary">Budget: $${addCommasToNum(movie.budget)}</span></li>
-      <li><span class="text-secondary">Revenue: $${addCommasToNum(movie.revenue)}</span></li>
-      <li><span class="text-secondary">Runtime: ${movie.runtime} minutes</span></li>
-      <li><span class="text-secondary">Status: ${movie.status}</span></li>
+      <li><span class="text-secondary">Number of Episodes: ${show.number_of_episodes}</span></li>
+      <li><span class="text-secondary">Last Episode to Air 
+      ${show.last_episode_to_air.name}</span></li>
+      <li><span class="text-secondary">Status: ${show.status}</span></li>
     </ul>
     <h4>Production Companies</h4>
     <div class="list-group">
-    ${movie.production_companies
+    ${show.production_companies
             .map(company => `<span>${company.name}</span>`)
             .join(', ')}
     </div>
