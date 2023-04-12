@@ -1,25 +1,28 @@
+// Cream un obiect in care punem o proprietate care primeste valoarea linkului din pagina
 const pageLocation = {
-    currentPage: window.location.pathname
+  currentPage: window.location.pathname
 }
 
 // Display popular movie
 async function displayPopularMovies() {
-    const { results } = await fetchApiData('movie/popular')
+  // aici facem Deconstruction pentru a trage din arrayul API-ul doar results. pentru ca exista in array o prioritate cu numele results.
+  const { results } = await fetchApiData('movie/popular')
 
-    results.forEach(movie => {
-        const card = document.createElement('div')
-        card.classList.add('card')
+  // pentru fiecare obiect facem un div cu clasa card si punem in el datele din API.
+  results.forEach(movie => {
+    const card = document.createElement('div')
+    card.classList.add('card')
 
-        card.innerHTML = `
+    card.innerHTML = `
           <a href="movie-details.html?id=${movie.id}">
             ${movie.poster_path
-                ? `<img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" 
+        ? `<img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" 
                 alt="${movie.title}"
                 class="card-img-top">`
-                : `<img src="../images/no-image.jpg" 
+        : `<img src="../images/no-image.jpg" 
                 alt="${movie.title}"
                 class="card-img-top">`
-            }
+      }
           </a>
           <div class="card-body">
             <h5 class="card-title">${movie.title}</h5>
@@ -29,28 +32,28 @@ async function displayPopularMovies() {
           </div>
         `
 
-        document.querySelector('#popular-movies').appendChild(card)
-    })
+    document.querySelector('#popular-movies').appendChild(card)
+  })
 }
 
 // Display popular shows
 async function displayPopularShows() {
-    const { results } = await fetchApiData('tv/popular')
+  const { results } = await fetchApiData('tv/popular')
 
-    results.forEach(show => {
-        const card = document.createElement('div')
-        card.classList.add('card')
+  results.forEach(show => {
+    const card = document.createElement('div')
+    card.classList.add('card')
 
-        card.innerHTML = `
+    card.innerHTML = `
           <a href="tv-details.html?id=${show.id}">
             ${show.poster_path
-                ? `<img src="https://image.tmdb.org/t/p/w500${show.poster_path}" 
+        ? `<img src="https://image.tmdb.org/t/p/w500${show.poster_path}" 
                 alt="${show.name}"
                 class="card-img-top">`
-                : `<img src="../images/no-image.jpg" 
+        : `<img src="../images/no-image.jpg" 
                 alt="${show.name}"
                 class="card-img-top">`
-            }
+      }
           </a>
           <div class="card-body">
             <h5 class="card-title">${show.name}</h5>
@@ -60,34 +63,36 @@ async function displayPopularShows() {
           </div>
         `
 
-        document.querySelector('#popular-shows').appendChild(card)
-    })
+    document.querySelector('#popular-shows').appendChild(card)
+  })
 }
 
 // Display movie Details
 
 async function displayMovieDetails() {
-    const movieId = window.location.search.split('=')[1]
+  // aici cream o variabila care va extrage doar numarul id-lui.
+  const movieId = window.location.search.split('=')[1]
 
-    const movie = await fetchApiData(`movie/${movieId}`)
+  // Aici tragem cu fatch din baza de date movie/id(filmului) facem asta pentru ca fiecare film are un id.
+  const movie = await fetchApiData(`movie/${movieId}`)
 
-    // overlay for background image
+  // overlay for background image
 
-    displayBackgroundImage('movie', movie.backdrop_path)
+  displayBackgroundImage('movie', movie.backdrop_path)
 
-    const div = document.createElement('div')
+  const div = document.createElement('div')
 
-    div.innerHTML = `
+  div.innerHTML = `
     <div class="details-top">
     <div>
       ${movie.poster_path
-            ? `<img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" 
+      ? `<img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" 
         alt="${movie.title}"
         class="card-img-top">`
-            : `<img src="../images/no-image.jpg" 
+      : `<img src="../images/no-image.jpg" 
         alt="${movie.title}"
         class="card-img-top">`
-        }
+    }
     </div>
     <div>
       <h2>${movie.title}</h2>
@@ -114,38 +119,38 @@ async function displayMovieDetails() {
     <h4>Production Companies</h4>
     <div class="list-group">
     ${movie.production_companies
-            .map(company => `<span>${company.name}</span>`)
-            .join(', ')}
+      .map(company => `<span>${company.name}</span>`)
+      .join(', ')}
     </div>
   </div>
     `
-    document.querySelector('#movie-details').appendChild(div)
+  document.querySelector('#movie-details').appendChild(div)
 }
 
 // Display Show Details
 
 async function displayShowDetails() {
-    const showId = window.location.search.split('=')[1]
+  const showId = window.location.search.split('=')[1]
+  // Aici tragem cu fatch din baza de date movie/id(filmului) facem asta pentru ca fiecare film are un id.
+  const show = await fetchApiData(`tv/${showId}`)
 
-    const show = await fetchApiData(`tv/${showId}`)
+  // overlay for background image
 
-    // overlay for background image
+  displayBackgroundImage('tv', show.backdrop_path)
 
-    displayBackgroundImage('tv', show.backdrop_path)
+  const div = document.createElement('div')
 
-    const div = document.createElement('div')
-
-    div.innerHTML = `
+  div.innerHTML = `
     <div class="details-top">
     <div>
       ${show.poster_path
-            ? `<img src="https://image.tmdb.org/t/p/w500${show.poster_path}" 
+      ? `<img src="https://image.tmdb.org/t/p/w500${show.poster_path}" 
         alt="${show.name}"
         class="card-img-top">`
-            : `<img src="../images/no-image.jpg" 
+      : `<img src="../images/no-image.jpg" 
         alt="${show.name}"
         class="card-img-top">`
-        }
+    }
     </div>
     <div>
       <h2>${show.name}</h2>
@@ -172,98 +177,103 @@ async function displayShowDetails() {
     <h4>Production Companies</h4>
     <div class="list-group">
     ${show.production_companies
-            .map(company => `<span>${company.name}</span>`)
-            .join(', ')}
+      .map(company => `<span>${company.name}</span>`)
+      .join(', ')}
     </div>
   </div>
     `
-    document.querySelector('#show-details').appendChild(div)
+  document.querySelector('#show-details').appendChild(div)
 }
 
 // Display backdrop Details Pages
 function displayBackgroundImage(type, backgroundPath) {
-    const overlayDiv = document.createElement('div')
-    overlayDiv.style.backgroundImage = `url(https://image.tmdb.org/t/p/original/${backgroundPath})`
-    overlayDiv.style.backgroundSize = 'cover';
-    overlayDiv.style.backgroundPosition = 'center';
-    overlayDiv.style.backgroundRepeat = 'no-repeat';
-    overlayDiv.style.height = '100vh';
-    overlayDiv.style.width = '100vw';
-    overlayDiv.style.position = 'absolute';
-    overlayDiv.style.top = '0';
-    overlayDiv.style.left = '0';
-    overlayDiv.style.zIndex = '-1';
-    overlayDiv.style.opacity = '0.1';
+  const overlayDiv = document.createElement('div')
+  overlayDiv.style.backgroundImage = `url(https://image.tmdb.org/t/p/original/${backgroundPath})`
+  overlayDiv.style.backgroundSize = 'cover';
+  overlayDiv.style.backgroundPosition = 'center';
+  overlayDiv.style.backgroundRepeat = 'no-repeat';
+  overlayDiv.style.height = '100vh';
+  overlayDiv.style.width = '100vw';
+  overlayDiv.style.position = 'absolute';
+  overlayDiv.style.top = '0';
+  overlayDiv.style.left = '0';
+  overlayDiv.style.zIndex = '-1';
+  overlayDiv.style.opacity = '0.1';
 
-    if (type === 'movie') {
-        document.querySelector('#movie-details').appendChild(overlayDiv)
-    } else {
-        document.querySelector('#show-details').appendChild(overlayDiv)
-    }
+  if (type === 'movie') {
+    document.querySelector('#movie-details').appendChild(overlayDiv)
+  } else {
+    document.querySelector('#show-details').appendChild(overlayDiv)
+  }
 }
 
 // Fetch data from TMDB API
+// cand va fi chemata functia fetchApiData(endpoint) vom pune fetchApiData(valoarea de aici va primi continuarea linkului in functie de ce avem nevoie din API )
 async function fetchApiData(endpoint) {
-    const API_KEY = '8f28ca44b3ae15f44603c63265c7255e';
-    const API_URL = 'https://api.themoviedb.org/3/'
+  const API_KEY = '8f28ca44b3ae15f44603c63265c7255e';
+  const API_URL = 'https://api.themoviedb.org/3/'
 
-    showSpinner()
+  showSpinner()
+  // fetch(adaugam linkul API/si/variabila din functie si cealanta variabila cu api key) nu sa pus / pentru ca sa lasat in link /
+  const response = await fetch(`${API_URL}${endpoint}?api_key=${API_KEY}&language=en-US`)
 
-    const response = await fetch(`${API_URL}${endpoint}?api_key=${API_KEY}&language=en-US`)
+  const data = await response.json()
 
-    const data = await response.json()
+  hideSpinner()
 
-    hideSpinner()
-
-    return data;
+  return data;
 }
 
 // Spinner
 
 function showSpinner() {
-    document.querySelector('.spinner').classList.add('show')
+  document.querySelector('.spinner').classList.add('show')
 }
 
 function hideSpinner() {
-    document.querySelector('.spinner').classList.remove('show')
+  document.querySelector('.spinner').classList.remove('show')
 }
 
 // Active nav link.
 function activeLi() {
-    const links = document.querySelectorAll('.nav-link')
-    links.forEach(link => {
-        if (link.getAttribute('href') === pageLocation.currentPage) {
-            link.classList.add('active')
-        }
-    })
+  const links = document.querySelectorAll('.nav-link')
+  links.forEach(link => {
+    // aici in if(punem conditia ca href din <a></a> are aceasi valoare cu linkul de pe pagina actuala)
+    if (link.getAttribute('href') === pageLocation.currentPage) {
+      link.classList.add('active')
+    }
+  })
 }
 
+// o functie care sa puna , dupa fiecare 3 numere.
 function addCommasToNum(number) {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
 // init app
 function init() {
-    switch (pageLocation.currentPage) {
-        case '/':
-        case '/index.html':
-            displayPopularMovies();
-            break;
-        case '/shows.html':
-            displayPopularShows();
-            break;
-        case '/movie-details.html':
-            displayMovieDetails()
-            break;
-        case '/tv-details.html':
-            displayShowDetails()
-            break;
-        case '/search.html':
-            console.log('search');
-            break;
-    }
+  // In aceasta functie folosim switch se putea folosi si if. 
+  // in switch(oferim valoarea linkului de pe pagina pe care ne aflam) iar cu case punem variantele posibile si in functie de caz chemam functiile.
+  switch (pageLocation.currentPage) {
+    case '/':
+    case '/index.html':
+      displayPopularMovies();
+      break;
+    case '/shows.html':
+      displayPopularShows();
+      break;
+    case '/movie-details.html':
+      displayMovieDetails()
+      break;
+    case '/tv-details.html':
+      displayShowDetails()
+      break;
+    case '/search.html':
+      console.log('search');
+      break;
+  }
 
-    activeLi()
+  activeLi()
 }
 
 
