@@ -1,6 +1,27 @@
 // Cream un obiect in care punem o proprietate care primeste valoarea linkului din pagina
-const pageLocation = {
-  currentPage: window.location.pathname
+const global = {
+  currentPage: window.location.pathname,
+  api: {
+    apiKey: '8f28ca44b3ae15f44603c63265c7255e',
+    apiUrl: 'https://api.themoviedb.org/3/'
+  }
+}
+
+// Fetch data from TMDB API
+// cand va fi chemata functia fetchApiData(endpoint) vom pune fetchApiData(valoarea de aici va primi continuarea linkului in functie de ce avem nevoie din API )
+async function fetchApiData(endpoint) {
+  const API_KEY = global.api.apiKey;
+  const API_URL = global.api.apiUrl;
+
+  showSpinner()
+  // fetch(adaugam linkul API/si/variabila din functie si cealanta variabila cu api key) nu sa pus / pentru ca sa lasat in link /
+  const response = await fetch(`${API_URL}${endpoint}?api_key=${API_KEY}&language=en-US`)
+
+  const data = await response.json()
+
+  hideSpinner()
+
+  return data;
 }
 
 // Display popular movie
@@ -253,23 +274,6 @@ function initSwiper() {
   })
 }
 
-// Fetch data from TMDB API
-// cand va fi chemata functia fetchApiData(endpoint) vom pune fetchApiData(valoarea de aici va primi continuarea linkului in functie de ce avem nevoie din API )
-async function fetchApiData(endpoint) {
-  const API_KEY = '8f28ca44b3ae15f44603c63265c7255e';
-  const API_URL = 'https://api.themoviedb.org/3/'
-
-  showSpinner()
-  // fetch(adaugam linkul API/si/variabila din functie si cealanta variabila cu api key) nu sa pus / pentru ca sa lasat in link /
-  const response = await fetch(`${API_URL}${endpoint}?api_key=${API_KEY}&language=en-US`)
-
-  const data = await response.json()
-
-  hideSpinner()
-
-  return data;
-}
-
 // Spinner
 
 function showSpinner() {
@@ -300,7 +304,7 @@ function addCommasToNum(number) {
 function init() {
   // In aceasta functie folosim switch se putea folosi si if. 
   // in switch(oferim valoarea linkului de pe pagina pe care ne aflam) iar cu case punem variantele posibile si in functie de caz chemam functiile.
-  switch (pageLocation.currentPage) {
+  switch (global.currentPage) {
     case '/':
     case '/index.html':
       DisplaySlider()
